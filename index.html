@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>musubi Lab — 世代をこえた体験と学びの場</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Sans+JP:wght@300;400;500;700&family=Quicksand:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --teal: #2dbfb0;
+    --teal-deep: #1f9587;
+    --teal-soft: #e6f6f3;
+    --ink: #2b2a26;
+    --ink-soft: #5a5851;
+    --cream: #faf6ef;
+    --cream-warm: #f3ede1;
+    --rule: #d9d3c4;
+    /* Headings: rounded gothic */
+    --font-heading: "Quicksand","Zen Maru Gothic","Hiragino Maru Gothic ProN",sans-serif;
+    /* Body, serif passages */
+    --font-serif: "Quicksand","Noto Serif JP","Hiragino Mincho ProN",serif;
+    /* Body, sans (utility) */
+    --font-sans: "Quicksand","Noto Sans JP",-apple-system,BlinkMacSystemFont,"Hiragino Sans",sans-serif;
+    /* Latin-only accent */
+    --font-latin: "Quicksand",sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family: var(--font-sans);
+    color:var(--ink);
+    background:var(--cream);
+    line-height:1.85;
+    font-weight:400;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  img{display:block;max-width:100%;height:auto}
+
+  /* ─── Nav ─── */
+  .nav{
+    position:fixed; top:0; left:0; right:0;
+    z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 22px clamp(20px, 4vw, 56px);
+    background:rgba(250,246,239,0.0);
+    transition:background .35s ease, box-shadow .35s ease, padding .35s ease;
+  }
+  .nav.scrolled{
+    background:rgba(250,246,239,0.92);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    box-shadow:0 1px 0 rgba(0,0,0,.04);
+    padding-top:14px; padding-bottom:14px;
+  }
+  .nav__brand{
+    font-family: var(--font-latin);
+    font-weight:500;
+    font-size:20px; letter-spacing:.14em; color:var(--teal-deep);
+    opacity:0; transition:opacity .4s ease;
+  }
+  .nav.scrolled .nav__brand{opacity:1}
+  .nav__links{display:flex; gap:clamp(18px,3vw,36px);}
+  .nav__links a{
+    color:var(--ink);
+    text-decoration:none;
+    font-size:13px;
+    letter-spacing:.18em;
+    font-weight:500;
+    position:relative;
+    padding-bottom:4px;
+  }
+  .nav__links a::after{
+    content:""; position:absolute; left:50%; bottom:0;
+    width:0; height:1px; background:var(--teal);
+    transition:width .3s ease, left .3s ease;
+  }
+  .nav__links a:hover::after{width:100%; left:0}
+
+  /* ─── Hero ─── */
+  .hero{
+    min-height:100vh;
+    display:grid;
+    place-items:center;
+    position:relative;
+    padding: 120px 24px 80px;
+    background:
+      radial-gradient(ellipse at 50% 30%, #ffffff 0%, var(--cream) 55%, var(--cream-warm) 100%);
+    overflow:hidden;
+  }
+  .hero::before, .hero::after{
+    content:""; position:absolute; border-radius:50%;
+    background:radial-gradient(circle, rgba(45,191,176,.08), rgba(45,191,176,0) 70%);
+    pointer-events:none;
+  }
+  .hero::before{ width:520px; height:520px; top:-120px; left:-160px; }
+  .hero::after { width:640px; height:640px; bottom:-220px; right:-200px; background:radial-gradient(circle, rgba(243,237,225,.9), rgba(243,237,225,0) 70%);}
+
+  .hero__inner{
+    display:flex; flex-direction:column; align-items:center;
+    text-align:center; max-width:880px; position:relative;
+  }
+  .hero__logo{
+    width:min(58vw, 360px);
+    animation: float 7s ease-in-out infinite;
+  }
+  @keyframes float{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-10px)}
+  }
+  .hero__wordmark{
+    font-family: var(--font-latin);
+    font-weight:500;
+    font-size: clamp(40px, 7.5vw, 84px);
+    letter-spacing: .08em;
+    color: var(--teal-deep);
+    margin-top: 18px;
+    line-height:1;
+  }
+  .hero__rule{
+    width:64px; height:1px; background:var(--teal);
+    margin: 28px auto 22px;
+  }
+  .hero__tag{
+    font-family: var(--font-heading);
+    font-weight:500;
+    font-weight: 400;
+    font-size: clamp(15px, 2.1vw, 19px);
+    color: var(--ink-soft);
+    letter-spacing:.16em;
+  }
+  .hero__tag span{
+    display:inline-block;
+    padding:0 .35em;
+  }
+  .hero__scroll{
+    position:absolute;
+    bottom: 36px; left:50%; transform:translateX(-50%);
+    font-family: var(--font-latin);
+    font-weight:500;
+    font-size:11px; letter-spacing:.4em;
+    color:var(--ink-soft);
+    writing-mode:vertical-rl;
+    text-orientation:mixed;
+  }
+  .hero__scroll::after{
+    content:""; display:block; width:1px; height:48px;
+    background:linear-gradient(to bottom, var(--ink-soft), transparent);
+    margin: 10px auto 0;
+    animation: drip 2.4s ease-in-out infinite;
+  }
+  @keyframes drip{
+    0%{transform:scaleY(0); transform-origin:top}
+    50%{transform:scaleY(1); transform-origin:top}
+    51%{transform:scaleY(1); transform-origin:bottom}
+    100%{transform:scaleY(0); transform-origin:bottom}
+  }
+
+  /* ─── Section frame ─── */
+  section{padding: clamp(80px, 12vw, 160px) clamp(20px, 5vw, 64px);}
+  .eyebrow{
+    font-family: var(--font-latin);
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing:.4em;
+    color: var(--teal-deep);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .section-title{
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: clamp(26px, 4vw, 40px);
+    letter-spacing:.06em;
+    color: var(--ink);
+    line-height:1.4;
+  }
+  .section-title .accent{ color: var(--teal-deep); }
+  .section-head{ text-align:center; margin-bottom: clamp(48px, 7vw, 80px);}
+  .section-head .rule{ width:48px; height:1px; background:var(--teal); margin: 26px auto 0;}
+
+  /* ─── Concept ─── */
+  .concept{ background: var(--cream); position:relative;}
+  .concept__intro{
+    max-width: 720px; margin: 0 auto;
+    text-align:center;
+    font-family: var(--font-serif);
+    font-size: clamp(15px, 1.8vw, 18px);
+    line-height: 2.2;
+    color: var(--ink);
+    margin-bottom: clamp(60px,8vw,100px);
+  }
+  .concept__intro p + p{ margin-top: 1.6em;}
+  .concept__intro em{
+    font-style:normal;
+    color:var(--teal-deep);
+    font-weight:500;
+  }
+
+  /* Photo + text rows */
+  .row{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(36px, 6vw, 96px);
+    align-items:center;
+    max-width: 1180px; margin: 0 auto clamp(80px, 10vw, 130px);
+  }
+  .row:last-child{margin-bottom:0}
+  .row--reverse .row__media{order:2}
+  .row__media{
+    position:relative;
+    aspect-ratio: 4 / 5;
+    overflow:hidden;
+    border-radius:2px;
+  }
+  .row__media img{
+    width:100%; height:100%; object-fit:cover;
+    transition: transform 1.2s cubic-bezier(.2,.6,.2,1);
+  }
+  .row__media:hover img{ transform: scale(1.04);}
+  .row__media::after{
+    content:""; position:absolute; inset:14px;
+    border:1px solid rgba(255,255,255,.5);
+    pointer-events:none;
+  }
+  .row__num{
+    font-family: var(--font-latin);
+    font-weight:400;
+    font-size: 84px;
+    line-height:1;
+    color: var(--teal);
+    opacity:.25;
+    margin-bottom: 8px;
+  }
+  .row__kicker{
+    font-family: var(--font-latin);
+    font-weight:500;
+    letter-spacing:.3em;
+    color: var(--teal-deep);
+    font-size:13px;
+    text-transform:uppercase;
+    margin-bottom: 16px;
+  }
+  .row__title{
+    font-family: var(--font-heading);
+    font-weight:500;
+    font-size: clamp(22px, 2.8vw, 30px);
+    line-height:1.55;
+    color:var(--ink);
+    margin-bottom: 22px;
+  }
+  .row__body{
+    font-family: var(--font-serif);
+    font-size: 15px;
+    line-height:2.1;
+    color: var(--ink-soft);
+  }
+  .row__body p + p{ margin-top: 1.1em;}
+
+  /* Pillars (the four bullets) */
+  .pillars{
+    max-width: 1100px; margin: 0 auto;
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(24px, 3vw, 40px);
+    padding-top: clamp(40px, 6vw, 70px);
+    border-top:1px solid var(--rule);
+  }
+  .pillar{
+    text-align:center;
+    padding: 0 6px;
+  }
+  .pillar__num{
+    font-family: var(--font-latin);
+    font-weight:500;
+    font-size: 22px;
+    color: var(--teal-deep);
+    letter-spacing:.18em;
+    text-transform:uppercase;
+  }
+  .pillar__rule{
+    width:24px; height:1px; background:var(--teal);
+    margin: 10px auto 14px;
+  }
+  .pillar__label{
+    font-family: var(--font-heading);
+    font-weight:500;
+    font-size: 16px;
+    color: var(--ink);
+    line-height:1.7;
+  }
+
+  /* ─── Access ─── */
+  .access{
+    background: var(--cream-warm);
+    background-image:
+      radial-gradient(ellipse at top right, rgba(45,191,176,.06), transparent 60%),
+      radial-gradient(ellipse at bottom left, rgba(45,191,176,.05), transparent 60%);
+  }
+  .access__grid{
+    max-width:1180px; margin: 0 auto;
+    display:grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: clamp(40px, 5vw, 72px);
+    align-items:stretch;
+  }
+  .access__map{
+    background: #fff;
+    padding: clamp(20px, 3vw, 36px);
+    box-shadow: 0 1px 0 rgba(0,0,0,.04), 0 20px 60px -30px rgba(0,0,0,.15);
+  }
+  .access__map img{ width:100%; height:auto;}
+  .access__info{
+    display:flex; flex-direction:column; justify-content:center;
+    padding: clamp(8px, 2vw, 28px) 4px;
+  }
+  .info-block{ padding: 20px 0; border-bottom: 1px solid var(--rule);}
+  .info-block:last-child{border-bottom:none}
+  .info-block:first-of-type{padding-top:0}
+  .info-label{
+    font-family: var(--font-latin);
+    font-weight:500;
+    font-size: 12px;
+    letter-spacing:.35em;
+    color: var(--teal-deep);
+    text-transform:uppercase;
+    margin-bottom: 8px;
+  }
+  .info-value{
+    font-family: var(--font-serif);
+    font-weight:400;
+    font-size: 17px;
+    color: var(--ink);
+    line-height:1.85;
+  }
+  .info-value .small{
+    display:block;
+    font-size:13px;
+    color:var(--ink-soft);
+    margin-top:6px;
+    letter-spacing:.04em;
+  }
+
+  /* ─── Footer ─── */
+  footer{
+    background:#fff;
+    padding: 60px 24px 40px;
+    text-align:center;
+    border-top:1px solid var(--rule);
+  }
+  .footer__mark{
+    font-family: var(--font-latin);
+    font-weight:500;
+    font-size: 20px;
+    letter-spacing:.2em;
+    color: var(--teal-deep);
+  }
+  .footer__sub{
+    font-size: 12px;
+    color: var(--ink-soft);
+    letter-spacing:.2em;
+    margin-top:8px;
+  }
+  .footer__copy{
+    font-family: var(--font-latin);
+    font-weight:400;
+    font-size: 11px;
+    color: var(--ink-soft);
+    letter-spacing:.3em;
+    margin-top: 26px;
+  }
+
+  /* ─── Reveal animation ─── */
+  .reveal{
+    opacity:0; transform:translateY(28px);
+    transition: opacity 1s ease, transform 1s cubic-bezier(.2,.7,.2,1);
+  }
+  .reveal.in{opacity:1; transform:none}
+
+  /* ─── Responsive ─── */
+  @media (max-width: 820px){
+    .row{ grid-template-columns: 1fr; gap: 28px; margin-bottom: 80px;}
+    .row--reverse .row__media{order:0}
+    .row__media{aspect-ratio: 4 / 3;}
+    .pillars{ grid-template-columns: repeat(2,1fr); row-gap: 32px;}
+    .access__grid{ grid-template-columns: 1fr;}
+    .nav__links{ gap: 16px;}
+    .nav__links a{ font-size: 11px; letter-spacing:.12em;}
+    .hero__scroll{display:none}
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="nav__brand">musubi Lab</div>
+  <div class="nav__links">
+    <a href="#concept">CONCEPT</a>
+    <a href="#access">ACCESS</a>
+  </div>
+</nav>
+
+<!-- ───────── HERO ───────── -->
+<header class="hero" data-screen-label="01 Hero">
+  <div class="hero__inner">
+    <img class="hero__logo" src="images/logo.png" alt="musubi Lab ロゴ">
+    <div class="hero__rule"></div>
+    <p class="hero__tag"><span>体験</span>と<span>学び</span>が<span>むすばれる</span>場所</p>
+  </div>
+  <div class="hero__scroll">SCROLL</div>
+</header>
+
+<!-- ───────── CONCEPT ───────── -->
+<section id="concept" class="concept" data-screen-label="02 Concept">
+  <div class="section-head reveal">
+    <div class="eyebrow">Concept</div>
+    <h2 class="section-title">日常の中の経験を、<br><span class="accent">未来へそっと手渡す。</span></h2>
+    <div class="rule"></div>
+  </div>
+
+  <div class="concept__intro reveal">
+    <p>神奈川県 <em>西湘・湘南</em>、富士山を望む里山のふもとで。<br>アメリカ・オハイオ州での暮らしから学んだこと、感じたこと。</p>
+    <p>子どもの挑戦、ママの経験、ばぁば・じいじの知恵。<br>世代をこえた体験イベントを通して、想いが自然につながる交流が生まれます。</p>
+  </div>
+
+  <!-- Row 1 — 外観 -->
+  <div class="row reveal">
+    <div class="row__media">
+      <img src="images/exterior.jpg" alt="musubi Lab 外観 — 緑の庭とピザ窯のある一軒家">
+    </div>
+    <div class="row__text">
+      <div class="row__num">01</div>
+      <div class="row__kicker">A Place to Gather</div>
+      <h3 class="row__title">庭と空が、<br>みんなを迎える。</h3>
+      <p class="row__body">
+        芝生の広がる庭、手づくりのピザ窯、季節の花。<br>
+        小さな子からおじいちゃん・おばあちゃんまで、世代をこえて集える場所です。
+      </p>
+      <p class="row__body">
+        ご近所さんと笑い合うような距離感で、毎日の延長線にある「ちょっと特別な時間」を過ごしてください。
+      </p>
+    </div>
+  </div>
+
+  <!-- Row 2 — 3Dプリンター -->
+  <div class="row row--reverse reveal">
+    <div class="row__media">
+      <img src="images/3dprinter.jpg" alt="3Dプリンターでものづくりを体験する様子">
+    </div>
+    <div class="row__text">
+      <div class="row__num">02</div>
+      <div class="row__kicker">Hands &amp; Curiosity</div>
+      <h3 class="row__title">子どもの「やってみたい」が、<br>かたちになる。</h3>
+      <p class="row__body">
+        3Dプリンターを使ったものづくり、デジタルとアナログを行き来する工作。<br>
+        オハイオ州での暮らしから持ち帰った学び方を、ここから少しずつ手渡していきます。
+      </p>
+      <p class="row__body">
+        「できた！」の小さな成功体験が、これからの一歩を後押しします。
+      </p>
+    </div>
+  </div>
+
+  <!-- Row 3 — 稲穂 -->
+  <div class="row reveal">
+    <div class="row__media">
+      <img src="images/rice.jpg" alt="黄金色の稲穂と里山の風景">
+    </div>
+    <div class="row__text">
+      <div class="row__num">03</div>
+      <div class="row__kicker">From the Land</div>
+      <h3 class="row__title">里山の恵みを、<br>食卓まで。</h3>
+      <p class="row__body">
+        足元には田んぼ、見上げれば富士山。<br>
+        ばぁば・じいじの知恵を借りながら、季節ごとの恵みをみんなで味わう体験を大切にしています。
+      </p>
+      <p class="row__body">
+        おむすびを結ぶように、人と土地と時間がやさしくつながっていきます。
+      </p>
+    </div>
+  </div>
+
+  <!-- Pillars -->
+  <div class="pillars reveal">
+    <div class="pillar">
+      <div class="pillar__num">i</div>
+      <div class="pillar__rule"></div>
+      <div class="pillar__label">子どもの<br>挑戦</div>
+    </div>
+    <div class="pillar">
+      <div class="pillar__num">ii</div>
+      <div class="pillar__rule"></div>
+      <div class="pillar__label">ママの<br>経験</div>
+    </div>
+    <div class="pillar">
+      <div class="pillar__num">iii</div>
+      <div class="pillar__rule"></div>
+      <div class="pillar__label">ばぁば・じいじ<br>の知恵</div>
+    </div>
+    <div class="pillar">
+      <div class="pillar__num">iv</div>
+      <div class="pillar__rule"></div>
+      <div class="pillar__label">世代をこえた<br>交流</div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── ACCESS ───────── -->
+<section id="access" class="access" data-screen-label="03 Access">
+  <div class="section-head reveal">
+    <div class="eyebrow">Access</div>
+    <h2 class="section-title">富士を望む、<br>南足柄の里へ。</h2>
+    <div class="rule"></div>
+  </div>
+
+  <div class="access__grid reveal">
+    <div class="access__map">
+      <img src="images/map.png" alt="musubi Lab アクセスマップ">
+    </div>
+    <div class="access__info">
+      <div class="info-block">
+        <div class="info-label">Address</div>
+        <div class="info-value">
+          〒250-0131<br>
+          神奈川県南足柄市 1141
+          <span class="small">エリア：西湘・湘南／富士山界隈</span>
+        </div>
+      </div>
+      <div class="info-block">
+        <div class="info-label">Open</div>
+        <div class="info-value">
+          イベント開催日のみ
+          <span class="small">開催情報は随時お知らせします</span>
+        </div>
+      </div>
+      <div class="info-block">
+        <div class="info-label">Contact</div>
+        <div class="info-value">
+          体験イベントへのご参加・お問い合わせは<br>個別にご案内いたします。
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer__mark">musubi Lab</div>
+  <div class="footer__sub">体験と学びが、むすばれる場所</div>
+  <div class="footer__copy">© musubi Lab</div>
+</footer>
+
+<script>
+  // Nav scroll state
+  const nav = document.getElementById('nav');
+  const onScroll = () => {
+    if (window.scrollY > 40) nav.classList.add('scrolled');
+    else nav.classList.remove('scrolled');
+  };
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // Reveal on scroll
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting){
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, {threshold: 0.12});
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
